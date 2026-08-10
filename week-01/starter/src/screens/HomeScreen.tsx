@@ -15,29 +15,25 @@ import {
   StatusBar,
   Alert,
 } from 'react-native';
-import { Repair } from '../types';
-import { RepairCard } from '../components/RepairCard';
-import { MOCK_REPAIRS } from '../data/mockData';
+import { Scooter } from '../types';
+import { ScooterCard } from '../components/ScooterCard';
+import { MOCK_SCOOTERS } from '../data/mockData';
 
 export function HomeScreen(): React.JSX.Element {
-  // TODO: Personaliza el título con el nombre de tu dominio
-  // Ejemplos: 'Mi Biblioteca', 'Farmacia Central', 'GymApp', 'Menú del Día'
-  const DOMAIN_TITLE = 'Mi Tienda de Reparaciones de Celulares';
-  const DOMAIN_SUBTITLE = 'Gestión de Órdenes y Reparaciones';
+  const DOMAIN_TITLE = 'Patinetas Joha';
+  const DOMAIN_SUBTITLE = 'Alquiler y mantenimiento de patinetas eléctricas';
 
-  /**
-   * Handles item card press.
-   * For now, just logs the item name. In week-03 we'll add navigation.
-   */
-  function handleRepairPress(repair: Repair): void {
-    // TODO: Mostrar un alert o log con el nombre del item
-    console.log('Reparación seleccionada:', repair.deviceModel);
-    console.log('Orden de Servicio',`Cliente: ${repair.customerName}\nDispositivo: ${repair.deviceModel}\nEstado: ${repair.status}\nCosto: $${repair.cost} COP`);
+  function handleScooterPress(scooter: Scooter): void {
+    Alert.alert(
+      'Reserva solicitada',
+      `${scooter.brand} ${scooter.model}\nEstado: ${scooter.status}\nUbicación: ${scooter.locationName}`,
+      [{ text: 'Entendido', style: 'default' }],
+    );
   }
 
   return (
     <SafeAreaView style={styles.safeArea}>
-      <StatusBar barStyle="light-content" backgroundColor="#0d1117" />
+      <StatusBar barStyle="light-content" backgroundColor="#e91e63" />
 
       {/* ============================================
           TODO: Implementar el Header de la app
@@ -47,6 +43,9 @@ export function HomeScreen(): React.JSX.Element {
       <View style={styles.header}>
         <Text style={styles.headerTitle}>{DOMAIN_TITLE}</Text>
         <Text style={styles.headerSubtitle}>{DOMAIN_SUBTITLE}</Text>
+        <View style={styles.headerBadge}>
+          <Text style={styles.headerBadgeText}>Servicio premium</Text>
+        </View>
       </View>
 
       {/* ============================================
@@ -59,11 +58,11 @@ export function HomeScreen(): React.JSX.Element {
         contentContainerStyle={styles.listContent}
         showsVerticalScrollIndicator={false}
       >
-        {MOCK_REPAIRS.map((repair) => (
-          <RepairCard
-            key={repair.id}
-            repair={repair}
-            onPress={handleRepairPress}
+        {MOCK_SCOOTERS.map((scooter) => (
+          <ScooterCard
+            key={scooter.id}
+            scooter={scooter}
+            onPress={handleScooterPress}
           />
         ))}
       </ScrollView>
@@ -74,30 +73,47 @@ export function HomeScreen(): React.JSX.Element {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: '#0d1117',
+    backgroundColor: '#fdf7fa',
   },
   header: {
-    paddingHorizontal: 16,
-    paddingVertical: 20,
+    paddingHorizontal: 18,
+    paddingVertical: 24,
     borderBottomWidth: 1,
-    borderBottomColor: '#30363d',
-    backgroundColor: '#161b22',
+    borderBottomColor: '#f4dce6',
+    backgroundColor: '#fff7fa',
   },
   headerTitle: {
-    fontSize: 26,
-    fontWeight: 'bold',
-    color: '#ffffff',
+    fontSize: 30,
+    fontWeight: '800',
+    color: '#b0004f',
+    letterSpacing: 0.3,
   },
   headerSubtitle: {
     fontSize: 14,
-    color: '#58a6ff',
-    marginTop: 4,
-    fontWeight: '500',
+    color: '#7d4b67',
+    marginTop: 5,
+    fontWeight: '600',
+  },
+  headerBadge: {
+    marginTop: 12,
+    alignSelf: 'flex-start',
+    backgroundColor: '#ffe7ef',
+    borderRadius: 999,
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderWidth: 1,
+    borderColor: '#f3c3d5',
+  },
+  headerBadgeText: {
+    fontSize: 12,
+    fontWeight: '700',
+    color: '#d81b60',
   },
   listContainer: {
     flex: 1,
   },
   listContent: {
     padding: 16,
+    paddingTop: 18,
   },
 });

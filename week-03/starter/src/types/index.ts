@@ -9,4 +9,5 @@ export interface Item {
   status: 'disponible' | 'en_uso' | 'mantenimiento';
   location: string;
   autonomy: string;
+  urlimg: string;
 }

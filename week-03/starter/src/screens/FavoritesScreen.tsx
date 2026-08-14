@@ -1,8 +1,7 @@
-// src/screens/FavoritesScreen.tsx
 // Segunda pestaña del Tab Navigator.
 // Muestra una lista de patinetas eléctricas favoritas.
 
-import { FlatList, StyleSheet, Text, View } from 'react-native';
+import { FlatList, Image, StyleSheet, Text, View } from 'react-native';
 
 import { FAVORITES } from '../data/mockData';
 import { COLORS, RADIUS, SPACING, TYPOGRAPHY } from '../theme';
@@ -13,10 +12,24 @@ export function FavoritesScreen(): React.JSX.Element {
    * Renderiza cada patineta favorita.
    */
   function renderFavorite({ item }: { item: Item }): React.JSX.Element {
+    const imageUrl = item.urlimg;
+
     return (
       <View style={styles.card}>
-        {/* Ícono de favorito */}
-        <Text style={styles.heartIcon}>♥</Text>
+        {/* Imagen de la patineta */}
+        {imageUrl ? (
+          <Image
+            source={{ uri: imageUrl }}
+            style={styles.itemImage}
+            resizeMode="cover"
+          />
+        ) : (
+          <View style={[styles.itemImage, styles.imagePlaceholder]}>
+            <Text style={styles.placeholderText}>🛴</Text>
+          </View>
+        )}
+
+        {/* Contenido principal de la tarjeta */}
         <View style={styles.cardContent}>
           <Text style={styles.itemName}>{item.name}</Text>
           <Text style={styles.itemDescription} numberOfLines={2}>
@@ -32,6 +45,9 @@ export function FavoritesScreen(): React.JSX.Element {
             </Text>
           </View>
         </View>
+
+        {/* Ícono de favorito */}
+        <Text style={styles.heartIcon}>♥</Text>
       </View>
     );
   }
@@ -81,13 +97,25 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: COLORS.border,
     flexDirection: 'row',
-    alignItems: 'flex-start',
+    alignItems: 'center',
     gap: SPACING.md,
+  },
+  itemImage: {
+    width: 70,
+    height: 70,
+    borderRadius: RADIUS.sm,
+    backgroundColor: COLORS.surfaceAlt,
+  },
+  imagePlaceholder: {
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  placeholderText: {
+    fontSize: TYPOGRAPHY.size.xl,
   },
   heartIcon: {
     fontSize: TYPOGRAPHY.size.lg,
-    color: COLORS.accent, // Usamos el acento magenta/rosa
-    marginTop: 2,
+    color: COLORS.accent, // Tono magenta/rosa
   },
   cardContent: {
     flex: 1,

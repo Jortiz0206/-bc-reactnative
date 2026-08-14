@@ -1,4 +1,3 @@
-// src/screens/HomeScreen.tsx
 // Pantalla de lista — muestra todas las patinetas eléctricas del catálogo.
 // Al presionar un ítem navega al DetailScreen pasando los params completos.
 
@@ -10,6 +9,7 @@ import {
   StyleSheet,
   Text,
   View,
+  Image,
 } from 'react-native';
 
 import { ITEMS } from '../data/mockData';
@@ -40,6 +40,7 @@ export function HomeScreen(): React.JSX.Element {
       status: item.status,
       location: item.location,
       autonomy: item.autonomy,
+      urlimg: item.urlimg,
     });
   }
 
@@ -47,6 +48,8 @@ export function HomeScreen(): React.JSX.Element {
    * Renderiza cada patineta en la lista.
    */
   function renderItem({ item }: { item: Item }): React.JSX.Element {
+    const imageUrl = item.urlimg;
+
     return (
       <Pressable
         style={({ pressed }) => [
@@ -56,18 +59,34 @@ export function HomeScreen(): React.JSX.Element {
         onPress={() => handleItemPress(item)}
         testID={`item-${item.id}`}
       >
-        <Text style={styles.itemName}>{item.name}</Text>
-        <Text style={styles.itemDescription} numberOfLines={2}>
-          {item.description}
-        </Text>
+        {/* Imagen de la patineta */}
+        {imageUrl ? (
+          <Image
+            source={{ uri: imageUrl }}
+            style={styles.itemImage}
+            resizeMode="cover"
+          />
+        ) : (
+          <View style={[styles.itemImage, styles.imagePlaceholder]}>
+            <Text style={styles.placeholderText}>🛴</Text>
+          </View>
+        )}
 
-        {/* Información del dominio en la tarjeta */}
-        <View style={styles.detailsRow}>
-          <Text style={styles.detailText}>⚡ {item.batteryLevel}%</Text>
-          <Text style={styles.detailText}>📍 {item.location}</Text>
-          <Text style={styles.detailText}>
-            💰 ${item.pricePerMinute}/min
+        {/* Contenido principal de la tarjeta */}
+        <View style={styles.cardContent}>
+          <Text style={styles.itemName}>{item.name}</Text>
+          <Text style={styles.itemDescription} numberOfLines={2}>
+            {item.description}
           </Text>
+
+          {/* Información del dominio en la tarjeta */}
+          <View style={styles.detailsRow}>
+            <Text style={styles.detailText}>⚡ {item.batteryLevel}%</Text>
+            <Text style={styles.detailText}>📍 {item.location}</Text>
+            <Text style={styles.detailText}>
+              💰 ${item.pricePerMinute}/min
+            </Text>
+          </View>
         </View>
 
         <Text style={styles.chevron}>{'›'}</Text>
@@ -102,6 +121,8 @@ const styles = StyleSheet.create({
     padding: SPACING.base,
   },
   card: {
+    flexDirection: 'row',
+    alignItems: 'center',
     backgroundColor: COLORS.surface,
     borderRadius: RADIUS.md,
     padding: SPACING.base,
@@ -112,6 +133,23 @@ const styles = StyleSheet.create({
   cardPressed: {
     opacity: 0.7,
     backgroundColor: COLORS.surfaceAlt,
+  },
+  itemImage: {
+    width: 70,
+    height: 70,
+    borderRadius: RADIUS.sm,
+    backgroundColor: COLORS.surfaceAlt,
+    marginRight: SPACING.base,
+  },
+  imagePlaceholder: {
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  placeholderText: {
+    fontSize: TYPOGRAPHY.size.xl,
+  },
+  cardContent: {
+    flex: 1,
   },
   itemName: {
     fontSize: TYPOGRAPHY.size.md,
@@ -140,6 +178,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     right: SPACING.base,
     top: '50%',
+    transform: [{ translateY: -12 }],
     fontSize: TYPOGRAPHY.size.xl,
     color: COLORS.accent, // Tono magenta/rosa
   },

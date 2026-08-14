@@ -1,10 +1,9 @@
-// src/screens/DetailScreen.tsx
 // Pantalla de detalle — recibe los datos de la patineta seleccionada vía params.
 
 import React from 'react';
 import type { RouteProp } from '@react-navigation/native';
 import { useRoute } from '@react-navigation/native';
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Image, ScrollView, StyleSheet, Text, View } from 'react-native';
 
 import { COLORS, RADIUS, SPACING, TYPOGRAPHY } from '@/theme';
 import type { HomeStackParamList } from '@/navigation/types';
@@ -25,6 +24,7 @@ export function DetailScreen() {
     status,
     location,
     autonomy,
+    urlimg,
   } = route.params;
 
   return (
@@ -32,6 +32,19 @@ export function DetailScreen() {
       style={styles.container}
       contentContainerStyle={styles.content}
     >
+      {/* Imagen destacada de la patineta */}
+      {urlimg ? (
+        <Image
+          source={{ uri: urlimg }}
+          style={styles.image}
+          resizeMode="cover"
+        />
+      ) : (
+        <View style={[styles.image, styles.imagePlaceholder]}>
+          <Text style={styles.placeholderIcon}>🛴</Text>
+        </View>
+      )}
+
       {/* Título de la patineta */}
       <Text style={styles.name}>{name}</Text>
 
@@ -48,7 +61,7 @@ export function DetailScreen() {
 
       <View style={styles.field}>
         <Text style={styles.fieldLabel}>Nivel de Batería</Text>
-        <Text style={styles.fieldValue}>{batteryLevel}%</Text>
+        <Text style={styles.fieldValue}>⚡ {batteryLevel}%</Text>
       </View>
 
       <View style={styles.field}>
@@ -73,7 +86,7 @@ export function DetailScreen() {
 
       <View style={styles.field}>
         <Text style={styles.fieldLabel}>Ubicación</Text>
-        <Text style={styles.fieldValue}>{location}</Text>
+        <Text style={styles.fieldValue}>📍 {location}</Text>
       </View>
     </ScrollView>
   );
@@ -88,11 +101,26 @@ const styles = StyleSheet.create({
     padding: SPACING.base,
     gap: SPACING.md,
   },
+  image: {
+    width: '100%',
+    height: 220,
+    borderRadius: RADIUS.lg,
+    backgroundColor: COLORS.surfaceAlt,
+    borderWidth: 1,
+    borderColor: COLORS.border,
+  },
+  imagePlaceholder: {
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  placeholderIcon: {
+    fontSize: 48,
+  },
   name: {
     fontSize: TYPOGRAPHY.size.xl,
     fontWeight: TYPOGRAPHY.weight.bold,
     color: COLORS.textPrimary,
-    marginBottom: SPACING.xs,
+    marginTop: SPACING.xs,
   },
   badge: {
     alignSelf: 'flex-start',
@@ -100,7 +128,7 @@ const styles = StyleSheet.create({
     borderRadius: RADIUS.full,
     paddingHorizontal: SPACING.md,
     paddingVertical: SPACING.xs,
-    marginBottom: SPACING.md,
+    marginBottom: SPACING.xs,
   },
   badgeText: {
     fontSize: TYPOGRAPHY.size.xs,

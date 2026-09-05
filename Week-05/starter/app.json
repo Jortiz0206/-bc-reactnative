@@ -1,0 +1,27 @@
+{
+  "expo": {
+    "name": "week05-tanstack-query",
+    "slug": "week05-tanstack-query",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "dark",
+    "splash": {
+      "image": "./assets/splash-icon.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#0d1117"
+    },
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "dev.bootcamp.week05tanstackquery"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#0d1117"
+      },
+      "package": "dev.bootcamp.week05tanstackquery"
+    },
+    "newArchEnabled": true
+  }
+}
